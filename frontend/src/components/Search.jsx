@@ -1,5 +1,7 @@
 import { useState } from "react"
 
+import Card from "./Card"
+
 export default function Search() {
 
     const [flightNumber, setFlightNumber] = useState("")
@@ -28,9 +30,11 @@ export default function Search() {
                 />
                 <button type="submit">Submit</button>
             </form>
-            { flightData && (
-                <pre>{JSON.stringify(flightData, null, 2)}</pre>
-            )}
+            {
+                typeof flightData === "string"
+                ? <div>{flightData}</div>
+                : flightData && <Card flight = {flightData} />
+            }
         </div>
     )
 }
