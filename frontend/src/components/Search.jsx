@@ -12,8 +12,7 @@ export default function Search() {
             const data = await res.json()
             setFlightData(data)
         } else {
-            setFlightData(null)
-            alert("Flight not found")
+            setFlightData(`Flight not found`)
         }
     }
     

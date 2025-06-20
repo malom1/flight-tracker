@@ -23,7 +23,14 @@ app.get('/api/flight/:ident', async (req, res) => {
                 }
             }
         )
-        res.status(200).json(response.data)
+        const flights = response.data.flights || []
+        const activeFlight = flights.find(flight => flight.progress_percent > 0)
+        
+        if (activeFlight) {
+            res.status(200).json(activeFlight)
+        } else {
+            res.status(404).json({message: "No active flight found"})
+        }
     } catch (error) {
         res.status(error.response?.status)
         console.error('Error fetching data: ', error)
