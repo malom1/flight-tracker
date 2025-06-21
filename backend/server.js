@@ -24,7 +24,7 @@ app.get('/api/flight/:ident', async (req, res) => {
             }
         )
         const flights = response.data.flights || []
-        const activeFlight = flights.find(flight => flight.progress_percent > 0)
+        const activeFlight = flights.find(flight => flight.progress_percent > 0 && flight.progress_percent < 99)
         
         if (activeFlight) {
             res.status(200).json(activeFlight)
