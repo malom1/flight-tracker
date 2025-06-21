@@ -2,8 +2,14 @@ import express from 'express'
 import cors from 'cors'
 import axios from 'axios'
 import dotenv from 'dotenv'
+import mongoose from 'mongoose'
 
 dotenv.config()
+
+//Connect to database
+mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection failed: ', err))
 
 const app = express()
 const PORT = process.env.PORT || 4000
