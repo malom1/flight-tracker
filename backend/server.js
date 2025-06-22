@@ -3,6 +3,7 @@ import cors from 'cors'
 import axios from 'axios'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
+import Flight from './models/Flight.js'
 
 dotenv.config()
 
@@ -21,6 +22,12 @@ app.get('/api/flight/:ident', async (req, res) => {
     const { ident } = req.params
     const API_KEY = process.env.FLIGHTAWARE_API_KEY
 
+    let cachedFlight = await Flight.findOne( {ident} )
+
+    if (cachedFlight) {
+        return res.status(200).json(cachedFlight.data)
+    }
+
     try {
         const response = await axios.get(`https://aeroapi.flightaware.com/aeroapi/flights/${ident}`,
             {
@@ -33,6 +40,11 @@ app.get('/api/flight/:ident', async (req, res) => {
         const activeFlight = flights.find(flight => flight.progress_percent > 0 && flight.progress_percent < 99)
         
         if (activeFlight) {
+            await Flight.findOneAndUpdate(
+                { ident: activeFlight.ident },
+                { data: activeFlight, lastUpdated: new Date() },
+                { upsert: true }
+            )
             res.status(200).json(activeFlight)
         } else {
             res.status(404).json({message: "No active flight found"})
