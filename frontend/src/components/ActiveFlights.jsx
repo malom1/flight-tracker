@@ -5,6 +5,7 @@ export default function ActiveFlights() {
 
     const flightNums = ["HA50", "EY1", "OZ222", "AI102", "SQ24", "EY3"]
     const [activeFlights, setActiveFlights] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         // Search through the list and find the active flights
@@ -13,6 +14,7 @@ export default function ActiveFlights() {
                 flightNums.map(async(num) => {
                     const res = await fetch(`http://localhost:3000/api/flight/${num}`)
                     if (res.ok) {
+                        setLoading(false)
                         const data = res.json()
                         return data
                     }
@@ -28,6 +30,7 @@ export default function ActiveFlights() {
     return(
         <div className="active-flights">
             <h2>Active Flights</h2>
+            {loading === true && <div className="loading">Loading...</div>}
             {activeFlights.length === 0 && <div>No active flights</div>}
             {activeFlights.map(flight => (
                 <Card key={flight.ident} flight = {flight}/>
