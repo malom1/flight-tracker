@@ -22,12 +22,6 @@ app.get('/api/flight/:ident', async (req, res) => {
     const { ident } = req.params
     const API_KEY = process.env.FLIGHTAWARE_API_KEY
 
-    let cachedFlight = await Flight.findOne( {ident} )
-
-    if (cachedFlight) {
-        return res.status(200).json(cachedFlight.data)
-    }
-
     try {
         const response = await axios.get(`https://aeroapi.flightaware.com/aeroapi/flights/${ident}`,
             {
@@ -40,8 +34,21 @@ app.get('/api/flight/:ident', async (req, res) => {
         const activeFlight = flights.find(flight => flight.progress_percent > 0 && flight.progress_percent < 99)
         
         if (activeFlight) {
+            const departureDate = activeFlight.scheduled_off
+            ? new Date(activeFlight.scheduled_off).toISOString().slice(0, 10)
+            : "unknown"
+
+            let cachedFlight = await Flight.findOne({
+                ident: activeFlight.ident,
+                departure_date: departureDate 
+            })
+
+            if (cachedFlight) {
+                return res.status(200).json(cachedFlight.data)
+            }            
+
             await Flight.findOneAndUpdate(
-                { ident: activeFlight.ident },
+                { ident: activeFlight.ident, departure_date: departureDate },
                 { data: activeFlight, lastUpdated: new Date() },
                 { upsert: true }
             )

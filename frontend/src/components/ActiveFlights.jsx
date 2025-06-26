@@ -3,18 +3,19 @@ import Card from "./Card"
 
 export default function ActiveFlights() {
 
-    const flightNums = ["HA50", "EY1", "OZ222", "AI102", "SQ24", "EY3"]
+    const flightNums = ["HA50", "KQ2", "EY1", "HY101", "OZ222", "AI119", "AI101", "SQ24", "EY3"]
     const [activeFlights, setActiveFlights] = useState([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        let intervalId
+
         // Search through the list and find the active flights
         async function fetchFlights() {
             const results = await Promise.all(
                 flightNums.map(async(num) => {
                     const res = await fetch(`http://localhost:3000/api/flight/${num}`)
                     if (res.ok) {
-                        setLoading(false)
                         const data = res.json()
                         return data
                     }
@@ -22,16 +23,21 @@ export default function ActiveFlights() {
                 })
             )
             setActiveFlights(results.filter(Boolean)) // Remove nulls (Non-active flights)
+            setLoading(false)
         }
         fetchFlights()
+
+        intervalId = setInterval(fetchFlights, 60 * 10000) // every minute
+
+        return () => clearInterval(intervalId)
     }, [])
     
 
     return(
         <div className="active-flights">
             <h2>Active Flights</h2>
-            {loading === true && <div className="loading">Loading...</div>}
-            {activeFlights.length === 0 && <div>No active flights</div>}
+            {loading && <div className="loading">Loading...</div>}
+            {activeFlights.length === 0 && !loading && <div>No active flights</div>}
             {activeFlights.map(flight => (
                 <Card key={flight.ident} flight = {flight}/>
             ))}
