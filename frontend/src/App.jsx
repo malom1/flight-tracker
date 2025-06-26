@@ -5,7 +5,7 @@ import ActiveFlights from "./components/ActiveFlights"
 function App() {
 
   return (
-    <div className="container">
+    <div className="container" >
       <Header/>
       <Search/>
       <ActiveFlights/>

@@ -1,4 +1,4 @@
-
+import '../styles/Card.css'
 
 export default function Card({flight}) {
 
@@ -21,16 +21,14 @@ export default function Card({flight}) {
         <div className="card">
             <div className="card-header">
                 <h3>{flight.ident}</h3>
-                <span className={`status ${flight.staus?.toLowerCase() || ""}`}>
+                <span className="card-status">
                     {flight.status || "Unknown"}
                 </span>
+                <strong>Aircraft: {flight.aircraft_type || "N/A"} </strong>
+                <br />
+                <strong>Registration: {flight.registration} </strong>
             </div>
             <div className="card-body">
-                <div className="card-section">
-                    <strong>Aircraft: </strong> {flight.aircraft_type || "N/A"}
-                    <br />
-                    <strong>Registration: </strong> {flight.registration}
-                </div>
                 <div className="card-section">
                     <strong>Origin: </strong> {flight.origin?.code_iata || "N/A"}
                     <br />
