@@ -1,4 +1,4 @@
-// import { useState } from "react";
+
 
 export default function Card({flight}) {
 
@@ -6,28 +6,44 @@ export default function Card({flight}) {
         return null
     }
 
-    // const [flightNum, setFlightNum] = useState(null)
-    // const [acType, setAcType] = useState("")
-    // const [acRegistration, setAcRegistration] = useState("")
-    // const [origin, setOrigin] = useState("")
-    // const [etd, setEtd] = useState("")
-    // const [destination, setDestination] = useState("")
-    // const [eta, setEta] = useState("")
+    function formatTime(iso) {
+        if (!iso) return "N/A"
+        const date = new Date(iso)
+        return date.toLocaleString(undefined, {
+            hour: "2-digit",
+            minute: "2-digit",
+            month: "short",
+            day: "numeric"
+        })
+    }
 
     return(
         <div className="card">
-            <div className="flight-info">
-                <h4>Flight Number: {flight.ident}</h4>
-                <h6>Aircraft Type: {flight.aircraft_type}</h6>
-                <h6>Aircraft Registration: {flight.registration}</h6>
+            <div className="card-header">
+                <h3>{flight.ident}</h3>
+                <span className={`status ${flight.staus?.toLowerCase() || ""}`}>
+                    {flight.status || "Unknown"}
+                </span>
             </div>
-            <div className="origin-info">
-                <h6>Origin: {flight.origin.code_iata}</h6>
-                <h6>ETD: {flight.actual_off}</h6>
+            <div className="card-body">
+                <div className="card-section">
+                    <strong>Aircraft: </strong> {flight.aircraft_type || "N/A"}
+                    <br />
+                    <strong>Registration: </strong> {flight.registration}
+                </div>
+                <div className="card-section">
+                    <strong>Origin: </strong> {flight.origin?.code_iata || "N/A"}
+                    <br />
+                    <strong>ETD: </strong> {formatTime(flight.actual_off || flight.scheduled_off)}
+                </div>
+                <div className="card-section">
+                    <strong>Destination: </strong> {flight.destination?.code_iata || "N/A"}
+                    <br />
+                    <strong>ETA: </strong> {formatTime(flight.estimated_in || flight.scheduled_in)}
+                </div>
             </div>
-            <div className="destination-info">
-                <h6>Destination: {flight.destination.code_iata}</h6>
-                <h6>ETA: {flight.estimated_in}</h6>
+            <div className="card-footer">
+                <strong>Progress: </strong> {flight.progress_percent != null ? `${flight.progress_percent}%` : "N/A"}
             </div>
         </div>
     )
