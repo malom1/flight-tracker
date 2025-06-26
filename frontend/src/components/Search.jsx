@@ -1,5 +1,5 @@
 import { useState } from "react"
-
+import '../styles/Search.css'
 import Card from "./Card"
 
 export default function Search() {
@@ -21,7 +21,6 @@ export default function Search() {
     return(
         <div className="search-container">
             <form onSubmit={handleSubmit} className="search-box">
-                <h2>Search for a flight</h2>
                 <h3>Flight Number: </h3>
                 <input
                     type="text"
