@@ -57,8 +57,9 @@ app.get('/api/flight/:ident', async (req, res) => {
             res.status(404).json({message: "No active flight found"})
         }
     } catch (error) {
-        res.status(error.response?.status)
         console.error('Error fetching data: ', error)
+        const status = error.response?.status || 500
+        res.status(status).json({ message: error.message })
     }
 })
 

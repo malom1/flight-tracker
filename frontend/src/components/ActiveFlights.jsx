@@ -3,7 +3,7 @@ import Card from "./Card"
 
 export default function ActiveFlights() {
 
-    const flightNums = ["HA50", "KQ2", "EY1", "HY101", "OZ222", "AI119", "AI101", "SQ24", "EY3"]
+    const flightNums = ["HA50", "AI119", "SQ24", "EY3"]
     const [activeFlights, setActiveFlights] = useState([])
     const [loading, setLoading] = useState(true)
 
@@ -34,7 +34,7 @@ export default function ActiveFlights() {
     
 
     return(
-        <div className="active-flights">
+        <div className="flight-card">
             <h2>Active Flights</h2>
             {loading && <div className="loading">Loading...</div>}
             {activeFlights.length === 0 && !loading && <div>No active flights</div>}

@@ -1,6 +1,10 @@
+import { useState } from 'react'
 import '../styles/Card.css'
 
 export default function Card({flight}) {
+
+    const [engineer, setEngineer] = useState("")
+    const [mechanic, setMechanic] = useState("")
 
     if (!flight) {
         return null
@@ -43,6 +47,21 @@ export default function Card({flight}) {
             <div className="card-footer">
                 <strong>Progress: </strong> {flight.progress_percent != null ? `${flight.progress_percent}%` : "N/A"}
             </div>
+            <form>
+                <label>Engineer: </label>
+                <input 
+                    type="text"
+                    value={engineer}
+                    onChange={e => setEngineer(e.target.value)}
+                />
+                <label>Mechanic: </label>
+                <input
+                    type="text"
+                    value={mechanic}
+                    onChange={e => setMechanic(e.target.value)}
+                />
+                <button>Submit</button>
+            </form>
         </div>
     )
 }

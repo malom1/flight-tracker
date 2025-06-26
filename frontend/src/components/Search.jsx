@@ -19,11 +19,11 @@ export default function Search() {
     }
     
     return(
-        <div className="search">
-            <form onSubmit={handleSubmit}>
+        <div className="search-container">
+            <form onSubmit={handleSubmit} className="search-box">
                 <h2>Search for a flight</h2>
                 <h3>Flight Number: </h3>
-                <input 
+                <input
                     type="text"
                     value={flightNumber}
                     onChange={e => setFlightNumber(e.target.value)}
