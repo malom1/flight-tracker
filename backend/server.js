@@ -23,6 +23,18 @@ app.get('/api/flight/:ident', async (req, res) => {
     const API_KEY = process.env.FLIGHTAWARE_API_KEY
 
     try {
+
+        const recentCachedFlight = await Flight.findOne({
+            ident,
+            lastUpdated: { $gt: new Date(Date.now() - 60 * 60 * 1000)} // Within the last hour
+        }).sort({ lastUpdated: -1})
+
+        if (recentCachedFlight) {
+            console.log(`Fetching cached data for ${ident}`)
+            return res.status(200).json(recentCachedFlight.data)
+        }
+
+        console.log(`Making api call for ${ident}`)
         const response = await axios.get(`https://aeroapi.flightaware.com/aeroapi/flights/${ident}`,
             {
                 headers: {
@@ -36,22 +48,19 @@ app.get('/api/flight/:ident', async (req, res) => {
         if (activeFlight) {
             const departureDate = activeFlight.scheduled_off
             ? new Date(activeFlight.scheduled_off).toISOString().slice(0, 10)
-            : "unknown"
-
-            let cachedFlight = await Flight.findOne({
-                ident: activeFlight.ident,
-                departure_date: departureDate 
-            })
-
-            if (cachedFlight) {
-                return res.status(200).json(cachedFlight.data)
-            }            
+            : new Date().toISOString().slice(0, 10)          
 
             await Flight.findOneAndUpdate(
                 { ident: activeFlight.ident, departure_date: departureDate },
-                { data: activeFlight, lastUpdated: new Date() },
+                {
+                    data: activeFlight, 
+                    lastUpdated: new Date(),
+                    ident: activeFlight.ident,
+                    departure_date: departureDate
+                },
                 { upsert: true }
             )
+            console.log(`Fetching API data ${ident} on ${departureDate}`)
             res.status(200).json(activeFlight)
         } else {
             res.status(404).json({message: "No active flight found"})
