@@ -34,11 +34,11 @@ app.get('/api/flight/:ident', async (req, res) => {
         }).sort({ lastUpdated: -1})
 
         if (recentCachedFlight) {
-            console.log(`Fetching cached data for ${ident}`)
+            console.log(`Fetching MONGOOSE data for ${ident}`)
             return res.status(200).json(recentCachedFlight.data)
         }
 
-        console.log(`Making api call for ${ident}`)
+        console.log(`Making API call for ${ident}`)
         const response = await axios.get(`https://aeroapi.flightaware.com/aeroapi/flights/${ident}`,
             {
                 headers: {
@@ -52,7 +52,7 @@ app.get('/api/flight/:ident', async (req, res) => {
         if (activeFlight) {
             const departureDate = activeFlight.scheduled_off
             ? new Date(activeFlight.scheduled_off).toISOString().slice(0, 10)
-            : new Date().toISOString().slice(0, 10)          
+            : new Date().toISOString().slice(0, 10)        
 
             await Flight.findOneAndUpdate(
                 { ident: activeFlight.ident, departure_date: departureDate },

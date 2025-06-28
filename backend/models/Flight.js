@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const flightSchema = new mongoose.Schema({
-    ident: String,
-    departure_date: String,
-    data: Object,
+    ident: { type: String, required: true },
+    departure_date: { type: String, required: true },
+    data: { type: mongoose.Schema.Types.Mixed, required: true },
     lastUpdated: { type: Date, default: Date.now }
 })
 

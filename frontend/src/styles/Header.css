@@ -1,7 +1,6 @@
 .app-header {
     text-align: center;
     margin: 50px;
-    background: #0a2342;
     color: #fffbe6;
 }
 
@@ -11,5 +10,5 @@ a {
 
 h1 {
     font-weight: bold;
-    color: #ffd700;
+    color: #0a2342;
 }

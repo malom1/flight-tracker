@@ -12,66 +12,6 @@ export default function ActiveFlights() {
     const isReqInProgress = useRef(false)
     const abortControllerRef = useRef(null)
 
-    // const fetchFlights = useCallback(async() => {
-    //     if (isReqInProgress.current) {
-    //         console.log('Request already in progress, skipping..')
-    //         return
-    //     }
-
-    //     isReqInProgress.current = true
-    //     setError(null)
-
-    //     const abortController = new AbortController()
-    //     abortControllerRef.current = abortController
-
-    //     try {
-    //         console.log('Fetching flights...')
-
-    //         const results = []
-    //         for (const num of flightNums) {
-    //             try {
-    //                 const res = await fetch(`http://localhost:4000/api/flight/${num}`, {
-    //                     signal: abortControllerRef.current.signal
-    //                 })
-
-    //                 if (res.ok) {
-    //                     const data = await res.json()
-
-    //                     if (data) {
-    //                         results.push(data)
-    //                     }
-    //                 } else if (res.status === 404) {
-    //                     console.log(`Flight ${num} is not active`)
-    //                 } else {
-    //                     console.warn(`Failed to fetch ${num}: ${res.status}`)
-    //                 }
-    //             } catch (fetchError) {
-    //                 if (fetchError.name === 'AbortError') {
-    //                     console.log('Request Aborted')
-    //                     setLoading(false)
-    //                     return
-    //                 }
-    //                 console.error(`Error fetching ${num}: `, fetchError)
-    //             }
-
-    //             // Add delay between requests to avoid overwhelming the server
-    //             await new Promise(resolve => setTimeout(resolve, 100))
-    //         }
-
-    //         setActiveFlights(results)
-    //         setLastUpdated(new Date())
-    //         setLoading(false)
-    //     } catch (error) {
-    //         if (error.name !== 'AbortError') {
-    //             setError(`Failed to fetch flight data: ${error.message}`)
-    //             setLoading(false)
-    //         }
-    //     } finally {
-    //         isReqInProgress.current = false
-    //     }
-    
-    // }, [])
-
     const fetchFlights = useCallback(async () => {
         if (isReqInProgress.current) {
             console.log('Request already in progress, skipping...')
