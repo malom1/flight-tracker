@@ -7,6 +7,6 @@ const flightSchema = new mongoose.Schema({
     lastUpdated: { type: Date, default: Date.now }
 })
 
-flightSchema.index({ ident: 1, departure_date:1 }, { unique: true })
+flightSchema.index({ ident: 1, departure_date: 1 }, { unique: true })
 
 export default mongoose.model('Flight', flightSchema)

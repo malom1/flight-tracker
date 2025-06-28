@@ -13,7 +13,7 @@ mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopo
     .catch(err => console.error('MongoDB connection failed: ', err))
 
 const app = express()
-const PORT = process.env.PORT || 4000
+const PORT = 4000
 
 app.use(cors())
 app.use(express.json())
@@ -21,6 +21,10 @@ app.use(express.json())
 app.get('/api/flight/:ident', async (req, res) => {
     const { ident } = req.params
     const API_KEY = process.env.FLIGHTAWARE_API_KEY
+
+    if (!API_KEY) {
+        return res.status(500).json({ message: "Flightaware API not configured" })
+    }
 
     try {
 
