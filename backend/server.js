@@ -4,6 +4,9 @@ import axios from 'axios'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import Flight from './models/Flight.js'
+import path from 'path'
+
+const __dirname = path.resolve()
 
 dotenv.config()
 
@@ -16,7 +19,11 @@ const app = express()
 const PORT = 4000
 
 app.use(cors())
-app.use(express.json())
+app.use(express.json()).use(express.static(path.join(__dirname, '/frontend/build')))
+
+app.get('*', (req, res) => 
+    res.sendFile(path.join(__dirname, '/client/build/index.html'))
+)
 
 app.get('/api/flight/:ident', async (req, res) => {
     const { ident } = req.params
