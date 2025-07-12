@@ -33,7 +33,7 @@ export default function ActiveFlights() {
             console.log('Fetching flights...')
 
             const promises = flightNums.map(num => 
-                fetch(`http://localhost:4000/api/flight/${num}`, { signal: abortController.signal })
+                fetch(`http://localhost:3000/api/flight/${num}`, { signal: abortController.signal })
                     .then(res => res.ok? res.json() : null)
                     .catch(err => {
                         if (err.name == 'AbortController') {

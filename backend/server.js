@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopo
     .catch(err => console.error('MongoDB connection failed: ', err))
 
 const app = express()
-const PORT = 4000
+const PORT = 3000
 
 app.use(cors())
 app.use(express.static(path.join(__dirname, '/frontend/dist')))
