@@ -1,3 +1,4 @@
+import history from 'connect-history-api-fallback'
 import express from 'express'
 import cors from 'cors'
 import axios from 'axios'
@@ -5,8 +6,11 @@ import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import Flight from './models/Flight.js'
 import path from 'path'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
 
-const __dirname = path.resolve()
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 dotenv.config()
 
@@ -18,8 +22,7 @@ mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopo
 const app = express()
 const PORT = 3000
 
-app.use(cors())
-app.use(express.static(path.join(__dirname, '/frontend/dist')))
+app.use('/api', cors(), express.json())
 
 app.get('/api/flight/:ident', async (req, res) => {
     const { ident } = req.params
@@ -79,8 +82,12 @@ app.get('/api/flight/:ident', async (req, res) => {
     }
 })
 
+app.use(history())
+
+app.use(express.static(join(__dirname, 'frontend', 'dist')))
+
 // app.get('*', (req, res) => 
-//     res.sendFile(path.join(__dirname, '/frontend/dist/index.html'))
+//     res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'))
 // )
 
 app.listen(PORT, () => {
