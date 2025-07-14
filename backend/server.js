@@ -19,7 +19,7 @@ mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopo
     .catch(err => console.error('MongoDB connection failed: ', err))
 
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 
 app.use('/api', cors(), express.json())
 
@@ -81,9 +81,19 @@ app.get('/api/flight/:ident', async (req, res) => {
     }
 })
 
-app.use(history())
+app.use(express.static(join(__dirname, '../frontend/dist')))
 
-app.use(express.static(join(__dirname, 'frontend', 'dist')))
+app.use(history({
+    rewrites: [
+        { from: /^\/api\/.*$/, to: function(context) {
+            return context.parsedUrl.pathname;
+        }}
+    ]
+}))
+
+app.get('*', (req, res) => {
+    res.sendFile(join(__dirname, '../frontend/dist/indext.html'))
+})
 
 app.listen(PORT, () => {
     console.log(`Server is running on PORT: ${PORT}`)
