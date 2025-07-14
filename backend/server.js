@@ -1,11 +1,9 @@
-import history from 'connect-history-api-fallback'
 import express from 'express'
 import cors from 'cors'
 import axios from 'axios'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import Flight from './models/Flight.js'
-import path from 'path'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 
@@ -82,13 +80,10 @@ app.get('/api/flight/:ident', async (req, res) => {
     }
 })
 
+import history from 'connect-history-api-fallback'
 app.use(history())
 
 app.use(express.static(join(__dirname, 'frontend', 'dist')))
-
-// app.get('*', (req, res) => 
-//     res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'))
-// )
 
 app.listen(PORT, () => {
     console.log(`Server is running on PORT: ${PORT}`)
