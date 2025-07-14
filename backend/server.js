@@ -81,15 +81,9 @@ app.get('/api/flight/:ident', async (req, res) => {
     }
 })
 
-// app.use(history())
+app.use(history())
 
-// app.use(express.static(join(__dirname, 'frontend', 'dist')))
-
-app.use(express.static(join(__dirname, '../frontend/dist')))
-
-app.get('*', (req, res) => {
-  res.sendFile(join(__dirname, '../frontend/dist/index.html'))
-})
+app.use(express.static(join(__dirname, 'frontend', 'dist')))
 
 app.listen(PORT, () => {
     console.log(`Server is running on PORT: ${PORT}`)
