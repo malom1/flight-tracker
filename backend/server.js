@@ -5,7 +5,8 @@ import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import Flight from './models/Flight.js'
 import { fileURLToPath } from 'url'
-import { dirname, join } from 'path'
+import path, { dirname, join } from 'path'
+import history from 'connect-history-api-fallback'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -80,10 +81,15 @@ app.get('/api/flight/:ident', async (req, res) => {
     }
 })
 
-import history from 'connect-history-api-fallback'
-app.use(history())
+// app.use(history())
 
-app.use(express.static(join(__dirname, 'frontend', 'dist')))
+// app.use(express.static(join(__dirname, 'frontend', 'dist')))
+
+app.use(express.static(join(__dirname, '../frontend/dist')))
+
+app.get('*', (req, res) => {
+  res.sendFile(join(__dirname, '../frontend/dist/index.html'))
+})
 
 app.listen(PORT, () => {
     console.log(`Server is running on PORT: ${PORT}`)
