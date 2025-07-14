@@ -3,9 +3,10 @@ import Card from "./Card"
 import '../styles/ActiveFlights.css'
 
 export default function ActiveFlights() {
-    const flightNums = ["HA50", "AI101", "AI119", "SQ24"]
-     
-                        // "EY3", "EY1", "KQA02", "PR126", 
+    const flightNums = ["HA50", "AI101", "AI119", "SQ24",
+                        "EY3", "EY1", "KQA02", "PR126",
+                        "OZ222", "HY101", "KU117", "OZ224"
+                        ] 
                         // "HY101", "OZ224", "CK231", "HA1601",
                         // "HA1614", "CSG2545", "CSG2543", "CZ699",
                         //  "QY364", "KU117", "BOX450", "O3181"                   
