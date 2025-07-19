@@ -70,8 +70,8 @@ export default function ActiveFlights() {
         // Initial fetch
         fetchFlights()
 
-        // Set up interval for periodic updates (60 minutes)
-        intervalId = setInterval(fetchFlights, 60 * 60 * 1000)
+        // Refresh every 3 hours
+        intervalId = setInterval(fetchFlights, 240 * 60 * 1000)
 
         // Cleanup function
         return () => {
